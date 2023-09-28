@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "841467742007",
+    "project_id": "messaging-bcc60",
+    "storage_bucket": "messaging-bcc60.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841467742007:android:61c3b6209fa48f15c73cb2",
+        "android_client_info": {
+          "package_name": "com.example.income"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwE5NLn-EkkoedtAUDymmAmKHhR2wNDhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
