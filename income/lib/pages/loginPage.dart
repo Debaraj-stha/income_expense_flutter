@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         controller.login();
-                        Get.to( HomePage());
+                        Get.to(HomePage());
                       } else {
                         debugPrint("Login failed");
                       }
@@ -131,7 +131,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(elevation: 0),
-                    onPressed: () {},
+                    onPressed: () {
+                      controller.signinWithGoogle();
+                    },
                     child: SmallText(
                       text: "Login up with Google",
                       color: constraints.primaryColor,

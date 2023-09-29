@@ -5,7 +5,7 @@ import 'dart:isolate';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
-
+import 'package:permission_handler/permission_handler.dart' as permission_handler;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +18,7 @@ import 'package:income/model/dbcontroller.dart';
 import 'package:income/model/model.dart';
 import 'package:income/utils/smallText.dart';
 import 'package:intl/intl.dart';
+// import 'package:location/location.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -1107,4 +1108,7 @@ class myController extends GetxController {
         });
     print("response${response.statusCode}");
   }
+ 
+
+  
 }

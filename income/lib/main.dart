@@ -5,6 +5,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:income/model/constraints.dart';
 import 'package:income/model/controller.dart';
 import 'package:income/model/handleLocale.dart';
 import 'package:income/model/localeString.dart';
@@ -18,15 +19,23 @@ import 'pages/pageHandler.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 import 'firebase_options.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await FlutterDownloader.initialize(debug: true);
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FlutterDownloader.initialize(debug: true);
+  try {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.android)
+        .whenComplete(() {
+      print("initialized");
+    });
+  } catch (e) {
+    print("Error initializing Firebase: $e");
+  }
 
-  // tz.initializeTimeZones();
+  tz.initializeTimeZones();
   FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
-  // await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
   await GetStorage.init();
   runApp(const MyApp());
 }
@@ -70,24 +79,29 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+
     NotificationHandler().initMessage(context);
-    NotificationHandler().getToken().then((value) {
-      print(value);
-      NotificationHandler().sendNotification(value);
-    });
+    // NotificationHandler().getToken().then((value) {
+    //   print(value);
+    //   print("in main");
+    //   NotificationHandler().sendNotification(value);
+    // });
     // Initialize Firebase and local notifications
 
     // Schedule the background task to run at a specific time
+    // constraints().getUserLocation();
+    // constraints().geyLocationData();
     Map<String, dynamic> data = {
       "message": "testing scheduled background task"
     };
-    // Workmanager().registerOneOffTask(
-    //   '1',
-    //   'simpleTask',
-    //   inputData: data,
-    //   initialDelay:
-    //       const Duration(seconds: 30), // Delay before running the task
-    // );
+    Workmanager().registerOneOffTask(
+      '1',
+      'simpleTask',
+      inputData: data,
+
+      initialDelay:
+          const Duration(seconds: 30), // Delay before running the task
+    );
 
     NotificationHandler().initMessage(context);
     NotificationHandler().interactMessage(context);

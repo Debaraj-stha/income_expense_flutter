@@ -43,3 +43,7 @@ class User {
   Map<String, dynamic> toJson() =>
       {"name": name, "email": email, "password": password, "id": id};
 }
+class UserLocation{
+  static double lat=0;
+  static double long=0;
+}

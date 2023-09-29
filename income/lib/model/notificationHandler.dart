@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -9,10 +10,15 @@ import 'package:http/http.dart' as http;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:workmanager/workmanager.dart';
 
+void Demo() {
+  print("demo is called");
+}
+
 class NotificationHandler {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   Future<String> getToken() async {
     String? token = await messaging.getToken();
@@ -90,73 +96,81 @@ class NotificationHandler {
     }
   }
 
-  void scheduleNotification(String to) async {
-    final now = tz.TZDateTime.now(tz.local);
+  // void scheduleNotification(String to) async {
+  //   print("called scheduleNotification");
+  //   final now = tz.TZDateTime.now(tz.local);
 
-    tz.TZDateTime scheduledTime = tz.TZDateTime(
-      tz.local,
-      now.year,
-      now.month,
-      now.day,
-      11,
-      10,
-    );
+  //   tz.TZDateTime scheduledTime = tz.TZDateTime(
+  //     tz.local,
+  //     now.year,
+  //     now.month,
+  //     now.day,
+  //     11,
+  //     10,
+  //   );
 
-    if (now.isAfter(scheduledTime)) {
-      scheduledTime = scheduledTime.add(const Duration(days: 1));
-    }
-    print(scheduledTime);
+  //   if (now.isAfter(scheduledTime)) {
+  //     scheduledTime = scheduledTime.add(const Duration(days: 1));
+  //   }
+  //   print(scheduledTime);
 
-    const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-      "channelId",
-      "channelName",
-      priority: Priority.max,
-      importance: Importance.max,
-    );
-    const DarwinNotificationDetails darwinNotificationDetails =
-        DarwinNotificationDetails(presentBadge: true, presentAlert: true);
-    const NotificationDetails details = NotificationDetails(
-      android: androidNotificationDetails,
-      iOS: darwinNotificationDetails,
-    );
+  //   const AndroidNotificationDetails androidNotificationDetails =
+  //       AndroidNotificationDetails(
+  //     "channelId",
+  //     "channelName",
+  //     priority: Priority.max,
+  //     importance: Importance.max,
+  //   );
+  //   const DarwinNotificationDetails darwinNotificationDetails =
+  //       DarwinNotificationDetails(presentBadge: true, presentAlert: true);
+  //   const NotificationDetails details = NotificationDetails(
+  //     android: androidNotificationDetails,
+  //     iOS: darwinNotificationDetails,
+  //   );
 
-    await notificationsPlugin.zonedSchedule(
-      1,
-      "Scheduled  Title",
-      "Scheduled  Body",
-      scheduledTime,
-      details,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
+  //   await notificationsPlugin.zonedSchedule(
+  //     1,
+  //     "Scheduled  Title",
+  //     "Scheduled  Body",
+  //     scheduledTime,
+  //     details,
+  //     uiLocalNotificationDateInterpretation:
+  //         UILocalNotificationDateInterpretation.absoluteTime,
+  //   );
 
-    sendNotification(to);
-  }
+  //   sendNotification(to);
+  // }
 
-  void sendNotification(String to) async {
+   sendNotification(String to) async {
+    print("\n\n\n\n\n\n\n\n\n");
+    print("send notification called");
+    print(to);
     String key =
-        "AAAAw-tixzc:APA91bGBZNX7Pc3DPzXEbqEYtNupZjb5bLLBGVPH4rmlYhTXRpKvSFXQ_oOzblyfJCmecH0WFPlO2nO-mUYpo_qw-iYfm-B-8Ygvw94QBt2CUkjlyqF4rAxcKsIKM1IkZ6l_EnSQn0Lo";
+        "AAAAw-tixzc:APA91bFqfKj3GL1AjieEgv38XrmwP8ac3M0JrNeP54mz_ec3gT8PigwpER7A5r-kSerdPBVuLaQ6sAoW59vi6kH5n_7JaL6WJZjkxd0kw9rk8FcLOIZKdwGNDWfC5DPzfRSWJKjR8_Ks";
     var data = {
       "to": to,
       "priority": "high",
       "notification": {
-        "title": "schedule hhhhhhhhh notification",
-        "body": "testing notification body",
-        // "imageUrl":
-        //     "https://i.pinimg.com/736x/49/10/b0/4910b092fe9a309b6036442cf05811d4.jpg"
+        "title": "Greeting",
+        "body": "Hello there",
       },
-      "type": "msg",
-      "data": {"message": "message "}
+      "data": {
+        "message": "message ",
+        "type": "msg",
+      }
     };
-
+    print("before http request");
     final response = await http.post(
+        // Uri.parse("https://jsonplaceholder.typicode.com/todos/1")
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
         body: jsonEncode(data),
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
           'Authorization': 'key=$key'
         });
+    
+    print(response.body);
+    print("after http request");
     print("response${response.statusCode}");
   }
 }

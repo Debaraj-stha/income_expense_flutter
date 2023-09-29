@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.income"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -64,5 +64,8 @@ android {
 flutter {
     source '../..'
 }
+apply plugin: 'com.google.gms.google-services'
+
+
 
 dependencies {}
