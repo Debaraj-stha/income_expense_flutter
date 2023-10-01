@@ -16,7 +16,7 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   final List locale = [
     {"name": "English", "locale": const Locale('en', 'US')},
-    {"name": "नेपाली", "locale": const Locale('np', 'NPL')},
+    {"name": "नेपाली", "locale": const Locale('ne', 'NP')},
     {"name": "हिंदी", "locale": const Locale('hi', 'IN')}
   ];
   changeLanguage(Locale locale) {

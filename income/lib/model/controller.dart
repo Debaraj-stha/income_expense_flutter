@@ -5,7 +5,8 @@ import 'dart:isolate';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
-import 'package:permission_handler/permission_handler.dart' as permission_handler;
+import 'package:permission_handler/permission_handler.dart'
+    as permission_handler;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -327,6 +328,10 @@ class myController extends GetxController {
     var response = await dbController.insertData(data);
 
     if (response != null || response.isNotEmpty) {
+      if (_todayExpenses.isEmpty && _todayExpenses.isEmpty) {
+        getTodayIncomeExpense('income');
+        getTodayIncomeExpense('expense');
+      }
       for (int i = 0; i < textEditingControllers.length; i++) {
         textEditingControllers[i]['controller'].clear();
         textEditingControllers[i]['focusNode'].unfocus();
@@ -1086,29 +1091,11 @@ class myController extends GetxController {
     }
   }
 
-  void sendNotification(String to) async {
-    String key =
-        "AAAAh9Ixkxk:APA91bGxgePRoGY5Q-vK4K_WRd6gdfHMQZ1NmYNK_agJFVf-s9WIy79ul4i8rOnCC7byROcI3iUwv-6EfKBmb1OmoW6SZ0YJQVEUrszLR_9BzrqsIn3qinJEYn7uF4exqTde8eUinmC9";
-    var data = {
-      "to": to,
-      "priority": "high",
-      "notification": {
-        "title": "testing notification",
-        "body": "testing notification body"
-      },
-      "type": "msg",
-      "data": {"message": "message "}
-    };
-    final response = await http.post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        body: jsonEncode(data),
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-          'Authorization': 'key=$key'
-        });
-    print("response${response.statusCode}");
-  }
- 
+  void currency(BuildContext context) {
+    Locale locale = Localizations.localeOf(context);
 
-  
+    var format = NumberFormat.simpleCurrency(locale: locale.toString());
+    print("CURRENCY SYMBOL ${format.currencySymbol}"); // $
+    print("CURRENCY NAME ${format.currencyName}"); // USD
+  }
 }

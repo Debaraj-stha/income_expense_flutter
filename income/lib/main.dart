@@ -36,7 +36,9 @@ void main() async {
   tz.initializeTimeZones();
   FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
   Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
-  await GetStorage.init();
+  await GetStorage.init().whenComplete(() {
+    print("get initialized");
+  });
   runApp(const MyApp());
 }
 
@@ -94,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Map<String, dynamic> data = {
       "message": "testing scheduled background task"
     };
+
     Workmanager().registerOneOffTask(
       '1',
       'simpleTask',
@@ -119,6 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    controller.currency(context);
     return const PageHandler();
   }
 }

@@ -6,31 +6,31 @@ class HandleLocale {
   final _storage = GetStorage();
   final key = 'locale';
 
-  void saveLocale(Locale locale) {
+void saveLocale(Locale locale)  {
     try {
-      _storage.write(key, locale);
+       _storage.write(key, locale);
     } catch (e) {
       rethrow;
     }
   }
 
-  bool isSavedLocale() {
-    return _storage.read(key) != null;
+  bool isSavedLocale()  {
+    return  _storage.read(key) != null;
   }
 
-  Locale getLocale() {
+  Locale getLocale()  {
     print("locale${isSavedLocale()}");
-    return isSavedLocale()
-        ? const Locale('np', 'NPL')
+    return  isSavedLocale()
+        ? const Locale('ne', 'NP')
         : const Locale('en', 'US');
   }
 
-  void changeLocale(Locale locale) {
+  Future<void> changeLocale(Locale locale) async {
     try {
       print(locale);
 
-      saveLocale(locale);
-      Get.updateLocale(locale);
+       saveLocale(locale);
+      await Get.updateLocale(locale);
     } catch (e) {
       print('Error saving locale: $e');
     }
